@@ -6,9 +6,7 @@ import {
   StyleSheet,
   StatusBar,
   TouchableOpacity,
-  Image,
 } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
 import { auth, db } from "./Firebase";
 import {
   getDocs,
