@@ -4,6 +4,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Ionicons";
 import { auth } from "../screens/Firebase";
 import COLORS from "../constants/colors";
+import DrawerButton from "./DrawerButton";
 
 export default function Drawer({ navigation }) {
   return (
@@ -20,7 +21,7 @@ export default function Drawer({ navigation }) {
           />
         </TouchableOpacity>
         <Text style={styles.username}>
-          {auth.currentUser ? auth.currentUser.email : "User"}
+          {auth.currentUser ? auth.currentUser.email : "Guest"}
         </Text>
       </View>
       <TouchableOpacity
@@ -33,18 +34,24 @@ export default function Drawer({ navigation }) {
           <Text style={styles.buttonText}>Your Products</Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          auth.signOut().then((res) => {
+      {auth.currentUser ? (
+        <DrawerButton
+          onPress={() => {
+            auth.signOut();
             navigation.navigate("Auth");
-          });
-        }}
-      >
-        <View style={styles.buttonView}>
-          <Icon style={styles.buttonIcon} name="log-out" size={22} />
-          <Text style={styles.buttonText}>Signout</Text>
-        </View>
-      </TouchableOpacity>
+          }}
+          icon="log-out"
+          text="Signout"
+        />
+      ) : (
+        <DrawerButton
+          onPress={() => {
+            navigation.navigate("Auth");
+          }}
+          icon="log-in"
+          text="Login"
+        />
+      )}
     </View>
   );
 }

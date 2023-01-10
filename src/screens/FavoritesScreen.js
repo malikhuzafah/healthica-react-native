@@ -21,6 +21,8 @@ import {
 } from "firebase/firestore";
 import BottomTabs from "../components/BottomTabs";
 import COLORS from "../constants/colors";
+import Alt from "../components/Alt";
+import FullWidthCard from "../components/FullWidthCard";
 
 export default function FavoritesScreen({ navigation }) {
   const user = auth.currentUser;
@@ -47,16 +49,12 @@ export default function FavoritesScreen({ navigation }) {
     ).then((docSnap) => {
       let tempMedicines = [];
       docSnap.forEach((document) => {
-        console.log("called");
-
         getDoc(doc(db, "products", `${document.data().medicineId}`))
           .then((docData) => {
             if (docData.exists()) {
               let item = docData.data();
               tempMedicines.push({ ...item, id: document.id });
               setfavorites(tempMedicines);
-            } else {
-              console.log("no such data exists");
             }
           })
           .catch((error) => {
@@ -95,36 +93,18 @@ export default function FavoritesScreen({ navigation }) {
           }}
           data={favorites}
           renderItem={({ item }) => (
-            <View style={styles.card}>
-              <View style={styles.cardView}>
-                <Image
-                  source={require("../../assets/medicine.jpg")}
-                  style={styles.image}
-                />
-              </View>
-              <View style={styles.textView}>
-                <Text style={styles.itemTitle}>{item.title}</Text>
-                <Text style={styles.itemPrice}>Rs. {item.price}</Text>
-              </View>
-              <TouchableOpacity
-                style={{ width: "10%" }}
-                onPress={() => {
-                  deleteItem(item.id);
-                }}
-              >
-                <Icon
-                  style={{ color: COLORS.favorite }}
-                  name="heart"
-                  size={28}
-                />
-              </TouchableOpacity>
-            </View>
+            <FullWidthCard
+              item={item}
+              icon="heart"
+              iconColor={COLORS.favorite}
+              onPress={() => {
+                deleteItem(item.id);
+              }}
+            />
           )}
         />
       ) : (
-        <View style={styles.alternateView}>
-          <Text style={styles.altText}>No favorites yet</Text>
-        </View>
+        <Alt text="No favorites yet" />
       )}
       <BottomTabs navigation={navigation} />
     </View>
@@ -132,8 +112,6 @@ export default function FavoritesScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  alternateView: { flex: 1, alignItems: "center", justifyContent: "center" },
-  altText: { fontSize: 20 },
   header: {
     paddingHorizontal: 20,
     marginTop: 20,
@@ -155,37 +133,4 @@ const styles = StyleSheet.create({
     width: "33%",
   },
   removeAllButton: { alignItems: "flex-end", justifyContent: "center" },
-  resultsText: { justifyContent: "center", alignItems: "center", padding: 10 },
-  card: {
-    elevation: 10,
-    backgroundColor: "#FFF",
-    marginTop: 20,
-    borderRadius: 15,
-    marginBottom: 10,
-    width: "100%",
-    boxShadow: "0 0 10px rgba(0,0,0,0.5)",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingEnd: 20,
-  },
-  cardView: {
-    width: "30%",
-    borderRadius: 15,
-    alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "flex-start",
-  },
-  image: {
-    borderRadius: 15,
-    height: 110,
-    width: 110,
-  },
-  textView: { paddingHorizontal: 10, paddingVertical: 10, width: "50%" },
-  itemTitle: {
-    fontWeight: "bold",
-    fontSize: 18,
-    color: COLORS.primaryText,
-  },
-  itemPrice: { fontSize: 15, color: COLORS.primaryText },
 });

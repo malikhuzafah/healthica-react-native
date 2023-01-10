@@ -17,14 +17,14 @@ export default function HomeScreen({ navigation }) {
   const drawer = useRef(null);
 
   return (
-    <DrawerLayoutAndroid
-      ref={drawer}
-      drawerWidth={300}
-      drawerPosition="left"
-      renderNavigationView={() => <Drawer navigation={navigation} />}
+    <View
+      style={[styles.container, { backgroundColor: COLORS.secondaryColor }]}
     >
-      <View
-        style={[styles.container, { backgroundColor: COLORS.secondaryColor }]}
+      <DrawerLayoutAndroid
+        ref={drawer}
+        drawerWidth={300}
+        drawerPosition="left"
+        renderNavigationView={() => <Drawer navigation={navigation} />}
       >
         <View style={styles.header}>
           <StatusBar
@@ -48,8 +48,8 @@ export default function HomeScreen({ navigation }) {
         <HomeHeader navigation={navigation} />
         <MedicinesList navigation={navigation} />
         <BottomTabs navigation={navigation} />
-      </View>
-    </DrawerLayoutAndroid>
+      </DrawerLayoutAndroid>
+    </View>
   );
 }
 

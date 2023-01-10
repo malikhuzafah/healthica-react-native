@@ -14,7 +14,7 @@ export default function BottomTabs({ navigation }) {
       <View style={styles.tabView}>
         <TouchableOpacity
           style={styles.tabButton}
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => navigation.replace("Home")}
         >
           <View style={styles.tab}>
             <Icon style={styles.tabIcon} name="home" size={25} />
@@ -22,7 +22,7 @@ export default function BottomTabs({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.tabButton, styles.addButton]}
-          onPress={() => navigation.navigate("AddMedicine")}
+          onPress={() => navigation.push("AddMedicine")}
         >
           <View style={styles.tab}>
             <Icon

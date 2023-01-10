@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -30,25 +30,19 @@ export default function AuthScreen({ navigation }) {
       return;
     }
     auth
-      .createUserWithEmailAndPassword({
-        displayName,
-        email,
-        password,
-      })
+      .createUserWithEmailAndPassword(email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        console.log("registered with: ", user.email);
         setDoc(doc(collection(db, "users")), {
           userId: auth.currentUser.uid,
           name: displayName,
         })
           .then(() => {
-            console.log("data saved");
+            navigation.push("Home");
           })
           .catch((error) => {
             console.log(error.message);
           });
-        navigation.push("Home");
       })
       .catch((error) => alert(error.message));
   };
@@ -61,12 +55,19 @@ export default function AuthScreen({ navigation }) {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((userCredentials) => {
-        const user = userCredentials.user;
-        console.log("Logged in with: ", user.uid);
         navigation.push("Home");
       })
       .catch((error) => alert(error.message));
   };
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigation.replace("Home");
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <View behavior="padding" style={styles.container}>

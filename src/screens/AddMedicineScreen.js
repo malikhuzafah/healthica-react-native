@@ -47,9 +47,13 @@ export default function AddMedicineScreen({ navigation }) {
 
   return (
     <View behavior="padding" style={styles.container}>
-      <StatusBar backgroundColor={COLORS.secondaryColor} />
+      <StatusBar backgroundColor={COLORS.bottomTabs} />
       <View style={styles.header}>
-        <Icon name="close" size={28} onPress={() => navigation.goBack()} />
+        <Icon
+          name="close"
+          size={28}
+          onPress={() => navigation.replace("Home")}
+        />
       </View>
       <View style={styles.addContainer}>
         <Text style={styles.addText}>Add Medicine</Text>
@@ -109,7 +113,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: COLORS.secondaryColor,
+    backgroundColor: COLORS.bottomTabs,
   },
   addContainer: {
     flex: 1,
@@ -133,10 +137,11 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   button: {
-    backgroundColor: "#0782F9",
+    // backgroundColor: "#0782F9",
+    backgroundColor: COLORS.primaryColor,
     width: "100%",
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 50,
     alignItems: "center",
   },
   buttonText: {
@@ -147,6 +152,7 @@ const styles = StyleSheet.create({
   addText: {
     fontSize: 30,
     fontWeight: "700",
-    color: "#0782F9",
+    // color: "#0782F9",
+    color: COLORS.primaryColor,
   },
 });

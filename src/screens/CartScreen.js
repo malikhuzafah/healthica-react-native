@@ -20,6 +20,7 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import COLORS from "../constants/colors";
+import Alt from "../components/Alt";
 
 export default function CartScreen({ navigation }) {
   const user = auth.currentUser;
@@ -31,6 +32,7 @@ export default function CartScreen({ navigation }) {
     });
     setCartItems([]);
   };
+
   const deleteItem = (id) => {
     deleteDoc(doc(db, "cart", `${id}`));
     setCartItems(cartItems.filter((item) => item.id !== id));
@@ -46,15 +48,13 @@ export default function CartScreen({ navigation }) {
     ).then((docSnap) => {
       let tempMedicines = [];
       docSnap.forEach((document) => {
-        getDoc(doc(db, "products", `${document.data().plantId}`))
+        getDoc(doc(db, "products", `${document.data().medicineId}`))
           .then((docData) => {
             if (docData.exists()) {
               let item = docData.data();
               item.quantity = document.data().quantity;
               tempMedicines.push({ ...item, id: document.id });
               setCartItems(tempMedicines);
-            } else {
-              console.log("no such data exists");
             }
           })
           .catch((error) => {
@@ -89,7 +89,6 @@ export default function CartScreen({ navigation }) {
           </TouchableOpacity>
         </View>
       </View>
-
       {cartItems.length > 0 ? (
         <>
           <FlatList
@@ -116,7 +115,7 @@ export default function CartScreen({ navigation }) {
                       <Icon name="remove" size={20} />
                     </TouchableOpacity>
                     <Text style={styles.quantityText}>{item.quantity}</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => {}}>
                       <Icon name="add" size={20} />
                     </TouchableOpacity>
                   </View>
@@ -151,7 +150,6 @@ export default function CartScreen({ navigation }) {
               style={{
                 fontSize: 18,
                 fontWeight: "bold",
-                // color: "#000",
                 color: COLORS.secondaryColor,
               }}
             >
@@ -160,11 +158,7 @@ export default function CartScreen({ navigation }) {
           </TouchableOpacity>
         </>
       ) : (
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <Text style={{ fontSize: 20 }}>No items in cart</Text>
-        </View>
+        <Alt text="No items in the cart" />
       )}
     </View>
   );

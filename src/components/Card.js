@@ -6,7 +6,7 @@ export default function Card({ navigation, item }) {
   return (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => navigation.navigate("Product", { item })}
+      onPress={() => navigation.push("Product", { item })}
     >
       <View style={styles.cardView}>
         <Image

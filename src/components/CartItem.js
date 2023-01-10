@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { db } from "../screens/Firebase.js";
 import { deleteDoc, doc } from "firebase/firestore";
 
-export default function CartItem({ navigation, item }) {
+export default function CartItem({ item }) {
+  const [quantity, setQuantity] = useState(item.quantity);
+
   const deleteItem = () => {
     deleteDoc(doc(db, "cart", `${item.id}`));
   };
@@ -37,10 +39,12 @@ export default function CartItem({ navigation, item }) {
           <TouchableOpacity>
             <Icon name="remove" size={20} />
           </TouchableOpacity>
-          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-            {item.quantity}
-          </Text>
-          <TouchableOpacity>
+          <Text style={{ fontSize: 15, fontWeight: "bold" }}>{quantity}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              setQuantity(quantity + 1);
+            }}
+          >
             <Icon name="add" size={20} />
           </TouchableOpacity>
         </View>

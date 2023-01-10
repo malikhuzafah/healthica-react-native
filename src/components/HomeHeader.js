@@ -19,7 +19,6 @@ export default function HomeHeader({ navigation }) {
     )
       .then((docSnap) => {
         setUserName(docSnap.docs[0].data().name);
-        console.log(user);
       })
       .catch((err) => {
         console.log(err.message);
@@ -40,10 +39,12 @@ export default function HomeHeader({ navigation }) {
             </Text>
           </View>
           <View style={styles.imageContainer}>
-            <Image
-              source={require("../../assets/profile.png")}
-              style={styles.image}
-            />
+            <TouchableOpacity onPress={() => navigation.navigate("Auth")}>
+              <Image
+                source={require("../../assets/profile.png")}
+                style={styles.image}
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </View>

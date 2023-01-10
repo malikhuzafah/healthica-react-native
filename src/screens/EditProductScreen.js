@@ -10,6 +10,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { auth, db } from "./Firebase.js";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+import COLORS from "../constants/colors.js";
 
 export default function EditProduct({ navigation }) {
   const medicine = navigation.getParam("item");
@@ -18,7 +19,6 @@ export default function EditProduct({ navigation }) {
     if (auth.currentUser == null) {
       navigation.navigate("Auth");
     }
-    console.log(medicine);
   }, []);
 
   const [title, setTitle] = useState(medicine.title);
@@ -36,8 +36,7 @@ export default function EditProduct({ navigation }) {
       quantity,
     })
       .then(() => {
-        navigation.push("UserProducts");
-        console.log("data submitted");
+        navigation.replace("UserProducts");
       })
       .catch((error) => {
         console.log(error);
@@ -51,6 +50,7 @@ export default function EditProduct({ navigation }) {
 
   return (
     <View behavior="padding" style={styles.container}>
+      <StatusBar backgroundColor={COLORS.bottomTabs} />
       <View style={styles.header}>
         <Icon name="close" size={28} onPress={() => navigation.goBack()} />
       </View>
@@ -92,7 +92,6 @@ export default function EditProduct({ navigation }) {
             style={styles.input}
           />
         </View>
-
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={updateMedicine} style={styles.button}>
             <Text style={styles.buttonText}>Submit</Text>
@@ -117,8 +116,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#ebeffa",
-    paddingTop: StatusBar.currentHeight,
+    backgroundColor: COLORS.bottomTabs,
   },
   addContainer: {
     flex: 1,
@@ -139,13 +137,13 @@ const styles = StyleSheet.create({
     width: "60%",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 40,
+    marginTop: 20,
   },
   button: {
-    backgroundColor: "#0782F9",
+    backgroundColor: COLORS.primaryColor,
     width: "100%",
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 50,
     alignItems: "center",
   },
   buttonText: {
@@ -156,6 +154,7 @@ const styles = StyleSheet.create({
   addText: {
     fontSize: 30,
     fontWeight: "700",
-    color: "#0782F9",
+    color: COLORS.primaryColor,
+    marginBottom: 20,
   },
 });

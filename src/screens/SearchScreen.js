@@ -58,7 +58,11 @@ export default function SeacrhScreen({ navigation }) {
         }}
         data={results}
         renderItem={({ item }) => (
-          <FullWidthCard item={item} navigation={navigation} />
+          <FullWidthCard
+            item={item}
+            icon="arrow-forward"
+            onPress={() => navigation.navigate("Product", { item })}
+          />
         )}
       />
     </View>

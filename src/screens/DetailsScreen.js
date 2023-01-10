@@ -51,7 +51,6 @@ export default function DetailsScreen({ navigation }) {
       return;
     }
     if (isFavorite) {
-      let id;
       getDocs(
         query(
           collection(db, "userFavorites"),
@@ -59,15 +58,15 @@ export default function DetailsScreen({ navigation }) {
             "userId",
             "==",
             currentUser.uid,
+            "and",
             "medicineId",
             "==",
             medicine.id
           )
         )
       ).then((docSnap) => {
-        id = docSnap.doc.data().id;
+        deleteDoc(doc(db, "userFavorites", docSnap.doc.data().id));
       });
-      deleteDoc(doc(db, "userFavorites", id));
     } else {
       setDoc(doc(collection(db, "userFavorites")), {
         userId: currentUser.uid,
@@ -90,19 +89,19 @@ export default function DetailsScreen({ navigation }) {
     getDocs(
       query(
         collection(db, "userFavorites"),
-        where("userId", "==", currentUser.uid, "medicineId", "==", medicine.id)
+        where("medicineId", "==", medicine.id),
+        where("userId", "==", currentUser.uid)
       )
     )
       .then((docSnap) => {
-        if (docSnap.doc) {
+        if (docSnap.docs[0]) {
           setIsFavorite(true);
         }
       })
       .catch((error) => {
         console.log(error.message);
-        alert(error.message);
       });
-  });
+  }, []);
 
   return (
     <View style={styles.container}>
