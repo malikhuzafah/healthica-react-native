@@ -1,12 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Ionicons";
-import { auth } from "../screens/Firebase";
+import { auth, db } from "../screens/Firebase";
 import COLORS from "../constants/colors";
 import DrawerButton from "./DrawerButton";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 export default function Drawer({ navigation }) {
+  const currentUser = auth.currentUser;
+  const [userName, setUserName] = useState("");
+
+  const getCurrentUserName = () => {
+    if (!currentUser) {
+      return;
+    }
+    getDocs(
+      query(collection(db, "users"), where("userId", "==", currentUser.uid))
+    )
+      .then((docSnap) => {
+        setUserName(docSnap.docs[0].data().name);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
+  useEffect(() => {
+    getCurrentUserName();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -21,12 +44,12 @@ export default function Drawer({ navigation }) {
           />
         </TouchableOpacity>
         <Text style={styles.username}>
-          {auth.currentUser ? auth.currentUser.email : "Guest"}
+          {auth.currentUser ? userName : "Guest"}
         </Text>
       </View>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("UserProducts");
+          navigation.push("UserProducts");
         }}
       >
         <View style={styles.buttonView}>

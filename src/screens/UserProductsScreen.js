@@ -11,25 +11,28 @@ export default function UserProductsScreen({ navigation }) {
   const user = auth.currentUser;
   const [userMedicines, setUserMedicines] = useState([]);
 
-  const getMedicines = async () => {
+  const getMedicines = () => {
     if (!user) {
       navigation.navigate("Auth");
       return;
     }
     getDocs(
       query(collection(db, "products"), where("createrId", "==", user.uid))
-    ).then((docSnap) => {
-      let tempMedicines = [];
-      docSnap.forEach((docSnap) => {
-        tempMedicines.push({ ...docSnap.data(), id: docSnap.id });
+    )
+      .then((docSnap) => {
+        let tempMedicines = [];
+        docSnap.forEach((docSnap) => {
+          tempMedicines.push({ ...docSnap.data(), id: docSnap.id });
+        });
+        console.log(tempMedicines);
+        setUserMedicines(tempMedicines);
+      })
+      .catch((err) => {
+        console.log(err.message);
       });
-      setUserMedicines(tempMedicines);
-    });
   };
 
-  useEffect(() => {
-    getMedicines();
-  }, []);
+  useEffect(getMedicines, []);
 
   return (
     <View style={styles.container}>

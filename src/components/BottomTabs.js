@@ -34,7 +34,7 @@ export default function BottomTabs({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.tabButton}
-          onPress={() => navigation.navigate("Favorites")}
+          onPress={() => navigation.replace("Favorites")}
         >
           <View style={styles.tab}>
             <Icon style={styles.tabIcon} name="heart" size={25} />

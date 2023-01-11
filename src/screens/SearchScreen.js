@@ -31,7 +31,7 @@ export default function SeacrhScreen({ navigation }) {
           style={styles.icon}
           name="arrow-back"
           size={28}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.replace("Home")}
         />
         <Text style={styles.title}>Search Medicines</Text>
       </View>

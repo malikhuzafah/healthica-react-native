@@ -77,7 +77,7 @@ export default function CartScreen({ navigation }) {
             style={styles.icon}
             name="arrow-back"
             size={28}
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.replace("Home")}
           />
         </View>
         <View style={styles.headerItems}>
