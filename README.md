@@ -1,0 +1,1 @@
+# healthica-react-native
